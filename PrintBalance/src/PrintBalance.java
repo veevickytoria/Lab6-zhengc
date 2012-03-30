@@ -13,24 +13,23 @@ import java.util.Scanner;
  *         Created Mar 27, 2011.
  */
 public class PrintBalance{
-
+	public static Locale enLocale = new Locale("en","US");
+	public static Locale geLocale = new Locale("de","DE");
+	public static Locale frLocale = new Locale("fr","FR");
 	
 	/**
 	 * Simple Java Method that is crying out to be localized.
 	 *
 	 * @param args
 	 */
+	
 	public static void main(String args[])
 	{
-		Locale enLocale = new Locale("en","US");
-		Locale geLocale = new Locale("de","DE");
-		Locale frLocale = new Locale("fr","FR");
-		
 		//in English
-		printBaseOnLocale(enLocale);
+		//printBaseOnLocale(enLocale);
 		
 		//in German
-		//printBaseOnLocale(geLocale);
+		printBaseOnLocale(geLocale);
 		
 		//in French
 		//printBaseOnLocale(frLocale);
@@ -43,44 +42,32 @@ public class PrintBalance{
 		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", locale);
 		
 		//print Greeting
-		printGreeting(messages);
+		System.out.println(messages.getString("greeting"));
 		
 		//print User's Name
-		printName(messages);
-		
-		//print today's date
-		printDate(messages, locale);
-		
-		//print currency
-		printCurrency(messages, locale);
-		
-		//print bye
-		printBye(messages);
-	}
-	
-	public static void printGreeting(ResourceBundle messages){
-		System.out.println(messages.getString("greeting"));
-	}
-	
-	public static void printName(ResourceBundle messages){
 		Scanner scanInput = new Scanner(System.in);
 		System.out.println(messages.getString("enterName"));
 		String name = scanInput.nextLine();
 		System.out.println(messages.getString("meetYou") + name);
-	}
-	
-	public static void printDate(ResourceBundle messages, Locale locale){
-		DateFormat dFormater = DateFormat.getDateInstance(DateFormat.SHORT, locale);
-		System.out.println(messages.getString("date") + dFormater.format(new Date()));
-	}
-	
-	public static void printCurrency(ResourceBundle messages, Locale locale){
-		NumberFormat mFormatter = NumberFormat.getCurrencyInstance(locale);
-		System.out.println(messages.getString("oweSchool") + mFormatter.format(Double.parseDouble(messages.getString("money"))));
-	}
-	
-	public static void printBye(ResourceBundle messages){
+		
+		//print today's date
+		System.out.println(messages.getString("date") + formatDate(locale,new Date()));
+		
+		//print currency
+		System.out.println(messages.getString("oweSchool") + formatCurrency(locale, messages.getString("money")));
+		
+		//print bye
 		System.out.println(messages.getString("goodBye"));
+	}
+	
+	public static String formatDate(Locale locale, Date date){
+		DateFormat dFormater = DateFormat.getDateInstance(DateFormat.SHORT, locale);
+		return dFormater.format(date);
+	}
+	
+	public static String formatCurrency(Locale locale, String currency){
+		NumberFormat mFormatter = NumberFormat.getCurrencyInstance(locale);
+		return mFormatter.format(Double.parseDouble(currency));
 	}
 }
 
